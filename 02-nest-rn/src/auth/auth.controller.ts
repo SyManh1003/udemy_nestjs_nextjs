@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from './passport/local-auth.guard';
 import { Public } from '@/decorator/customize';
+import { CreateAuthDto } from './dto/create-auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -16,9 +17,10 @@ export class AuthController {
   }
 
   // @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @Post('register')
+  @Public()
+  register(@Body() registerDto: CreateAuthDto) {
+    return this.authService.handleRegister(registerDto);
   }
 
 }
